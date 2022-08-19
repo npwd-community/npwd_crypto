@@ -21,7 +21,7 @@ const Container = styled.div`
 export const Portfolio = () => {
   return (
     <Container>
-      <Paper elevation={2} sx={{
+      <Paper elevation={4} variant={"outlined"} sx={{
         height: "100%",
         width: 300,
         display: "flex",
@@ -50,10 +50,10 @@ const ButtonContainer = styled.div`
 const ControlButtons = () => {
   return (
     <ButtonContainer>
-      <ActionButton variant="contained" endIcon={<CashValue />}>
+      <ActionButton variant="contained" endIcon={<SellIcon />}>
         Buy
       </ActionButton>
-      <ActionButton variant="contained" endIcon={<SellIcon />}>
+      <ActionButton variant="contained" endIcon={<CashValue />}>
         Sell
       </ActionButton>
       <ActionButton variant="contained" endIcon={<Transfer />}>

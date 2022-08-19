@@ -48,7 +48,7 @@ const getPercentDifference = (min: number, max: number) => {
 
 export const History = () => {
   const labels = ['', '', '', '', ''];
-  const pricehistory = [69, 42, 84, 84, 90]
+  const pricehistory = [90, 42, 84, 84, 69]
 
   const theme = useTheme()
   const isDarkmode = theme.palette.mode === 'dark';
@@ -108,7 +108,7 @@ export const History = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-      }}>
+      }} elevation={3} variant={"outlined"}>
         <Typography sx={{
           color: up === 1? green[500] : red[500],
           fontWeight: "bold"

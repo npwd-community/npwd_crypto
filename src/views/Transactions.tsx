@@ -26,52 +26,7 @@ const mockData: Transaction[] = [
     type: "transferred",
     amount: 2,
     value: 180
-  },
-  {
-    type: "bought",
-    amount: 69,
-    value: 1000
-  },
-  {
-    type: "sold",
-    amount: 420,
-    value: 42000
-  },
-  {
-    type: "transferred",
-    amount: 2,
-    value: 180
-  },
-  {
-    type: "bought",
-    amount: 69,
-    value: 1000
-  },
-  {
-    type: "sold",
-    amount: 420,
-    value: 42000
-  },
-  {
-    type: "transferred",
-    amount: 2,
-    value: 180
-  },
-  {
-    type: "bought",
-    amount: 69,
-    value: 1000
-  },
-  {
-    type: "sold",
-    amount: 420,
-    value: 42000
-  },
-  {
-    type: "transferred",
-    amount: 2,
-    value: 180
-  },
+  }
 ]
 
 function getListItem({type, amount, value}: Transaction) {
