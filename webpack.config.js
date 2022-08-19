@@ -58,7 +58,7 @@ module.exports = {
   },
   plugins: [
     new ModuleFederationPlugin({
-      name: 'template',
+      name: 'npwd_crypto',
       filename: 'remoteEntry.js',
       exposes: {
         './config': './npwd.config',
@@ -72,7 +72,7 @@ module.exports = {
         'react-dom': {
           singleton: true,
           requiredVersion: deps['react-dom'],
-        },
+        }
       },
     }),
     new HtmlWebpackPlugin({

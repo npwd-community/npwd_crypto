@@ -1,38 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { NUIContext, NuiContext, NuiProvider, useNuiEvent } from 'react-fivem-hooks';
-import { Link, useHistory } from 'react-router-dom';
+import React from 'react';
+import {NuiProvider} from 'react-fivem-hooks';
+import {Route, Switch} from 'react-router-dom';
 import styled from 'styled-components';
+import {IPhoneSettings} from '@project-error/npwd-types';
+import {i18n} from 'i18next';
+import {Theme, StyledEngineProvider, ThemeProvider, Typography} from '@mui/material';
+import {LoadingSpinner} from "./components/LoadingSpinner";
+import NavBar from './components/NavBar';
+import Header from "./components/Header";
+import {Portfolio} from "./views/Portfolio";
+import {History} from "./views/History"
+import {Transactions} from "./views/Transactions";
 
-import { IPhoneSettings } from '@project-error/npwd-types';
-import { i18n } from 'i18next';
-import { Theme, StyledEngineProvider, ThemeProvider } from '@mui/material';
-
-const Container = styled.div<{ isDarkMode: boolean }>`
+const AppContainer = styled.div<{ isDarkMode: any }>`
   flex: 1;
-  padding: 1.5rem;
   display: flex;
   box-sizing: border-box;
   flex-direction: column;
+  justify-content: space-between;
   max-height: 100%;
   background-color: #fafafa;
-  color: #212121;
-
-  ${({ isDarkMode }) =>
-    isDarkMode &&
-    `
+  ${({isDarkMode}) =>
+  isDarkMode &&
+  `
     background-color: #212121;
-    color: #fafafa;
   `}
-`;
-
-const LinkItem = styled(Link)<{ isDarkMode: boolean }>`
-  font-family: sans-serif;
-  text-decoration: none;
-  color: ${({ isDarkMode }) => (isDarkMode ? '#fafafa' : '#222')};
-`;
-
-const Footer = styled.footer`
-  margin-top: auto;
 `;
 
 interface AppProps {
@@ -41,38 +33,36 @@ interface AppProps {
   settings: IPhoneSettings;
 }
 
-const App = (props: AppProps) => {
-  const history = useHistory();
-  const [count, setCount] = useState(0);
-  const { data } = useNuiEvent<string>({ event: 'RANDOM' });
+const Container = styled.div`
+  height: 80%;
+  padding: 1rem;
+`
 
+const App = (props: AppProps) => {
   const isDarkMode = props.theme.palette.mode === 'dark';
 
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={props.theme}>
-        <Container isDarkMode={isDarkMode}>
-          <button onClick={() => history.push('/')} style={{ alignSelf: 'flex-start' }}>
-            Back
-          </button>
-          <h1>App title</h1>
+        <AppContainer isDarkMode={isDarkMode}>
+          <Header>
+            <Typography fontSize={24} fontWeight="bold">
+              Crypto
+            </Typography>
+          </Header>
 
-          <h2>Data from client: {data}</h2>
+          <Container>
+            <React.Suspense fallback={<LoadingSpinner/>}>
+              <Switch>
+                <Route path="/crypto" exact component={Portfolio}/>
+                <Route path="/crypto/history" component={History} />
+                <Route path="/crypto/transactions" component={Transactions}/>
+              </Switch>
+            </React.Suspense>
+          </Container>
 
-          <p>Language is: {props.settings.language.label}</p>
-
-          <div>
-            <button onClick={() => setCount((prev) => prev + 1)}>+</button>
-            <button>{count}</button>
-            <button onClick={() => setCount((prev) => prev - 1)}>-</button>
-          </div>
-
-          <Footer>
-            <LinkItem to="/" isDarkMode={isDarkMode}>
-              Home
-            </LinkItem>
-          </Footer>
-        </Container>
+          <NavBar/>
+        </AppContainer>
       </ThemeProvider>
     </StyledEngineProvider>
   );

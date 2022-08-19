@@ -1,15 +1,15 @@
-import { common, green } from '@mui/material/colors';
-import { ThemeOptions } from '@mui/material';
+import { common, orange } from '@mui/material/colors';
+import {createTheme} from '@mui/material';
 
-export const APP_PRIMARY_COLOR = green[500];
+export const APP_PRIMARY_COLOR = orange[500];
 export const APP_TEXT_COLOR = common.white;
 
-export const theme: ThemeOptions = {
+export const theme = {
   palette: {
     primary: {
       main: APP_PRIMARY_COLOR,
-      dark: green[700],
-      light: green[300],
+      dark: orange[700],
+      light: orange[300],
       contrastText: APP_TEXT_COLOR,
     },
     secondary: {
@@ -23,4 +23,6 @@ export const theme: ThemeOptions = {
       contrastText: APP_TEXT_COLOR,
     },
   },
-};
+}
+
+export default createTheme(theme)

@@ -10,7 +10,7 @@ import { NuiProvider } from 'react-fivem-hooks';
 import { RecoilRoot } from 'recoil';
 import { IPhoneSettings } from '@project-error/npwd-types';
 import i18next from 'i18next';
-import { createTheme } from '@mui/material';
+import theme from './app.theme'
 
 const Container = styled.div`
   position: relative;
@@ -52,12 +52,6 @@ const settings = {
     value: 'theme-name',
   },
 } as IPhoneSettings;
-
-const theme = createTheme({
-  palette: {
-    mode: 'light',
-  },
-});
 
 /*
  *   Providers loaded here will only be applied to the development environment.
