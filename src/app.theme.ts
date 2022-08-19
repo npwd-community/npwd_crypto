@@ -1,5 +1,4 @@
 import { common, orange } from '@mui/material/colors';
-import {createTheme} from '@mui/material';
 
 export const APP_PRIMARY_COLOR = orange[500];
 export const APP_TEXT_COLOR = common.white;
@@ -24,5 +23,3 @@ export const theme = {
     },
   },
 }
-
-export default createTheme(theme)

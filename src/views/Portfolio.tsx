@@ -2,7 +2,7 @@ import React from 'react'
 import {
   Button,
   Paper,
-  styled as MuiStyled
+  styled as MuiStyled, useTheme
 } from "@mui/material";
 import styled from "styled-components";
 import CashValue from '@mui/icons-material/AttachMoney';
@@ -17,7 +17,6 @@ const Container = styled.div`
   gap: 1.5rem;
   place-items: center;
 `
-
 
 export const Portfolio = () => {
   return (

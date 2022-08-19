@@ -10,7 +10,7 @@ import { NuiProvider } from 'react-fivem-hooks';
 import { RecoilRoot } from 'recoil';
 import { IPhoneSettings } from '@project-error/npwd-types';
 import i18next from 'i18next';
-import theme from './app.theme'
+import {createTheme} from "@mui/material";
 
 const Container = styled.div`
   position: relative;
@@ -57,6 +57,12 @@ const settings = {
  *   Providers loaded here will only be applied to the development environment.
  *   If you want to add more providers to the actual app inside NPWD you have to add them in APP.tsx.
  */
+
+const theme = createTheme({
+  palette: {
+    mode: 'light',
+  },
+});
 
 const Root = () => {
   if (process.env.REACT_APP_IN_GAME) {

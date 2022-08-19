@@ -2,7 +2,7 @@ import React from 'react'
 import CashValue from '@mui/icons-material/AttachMoney';
 import SellIcon from '@mui/icons-material/Sell';
 import Transfer from '@mui/icons-material/SubdirectoryArrowRight';
-import {Divider, List, Box} from "@mui/material";
+import {Divider, List, Box, Paper} from "@mui/material";
 import {AvatarListItem} from "../components/AvatarListItem";
 import styled from "styled-components";
 
@@ -100,7 +100,7 @@ function getListItem({type, amount, value}: Transaction) {
 
 export const Transactions = () => {
   return (
-    <Box sx={{
+    <Paper sx={{
       display: "flex",
       height: "100%",
       flexDirection: "column"
@@ -119,6 +119,6 @@ export const Transactions = () => {
           ))
         }
       </List>
-    </Box>
+    </Paper>
   )
 }
