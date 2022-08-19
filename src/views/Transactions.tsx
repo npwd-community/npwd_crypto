@@ -2,9 +2,8 @@ import React from 'react'
 import CashValue from '@mui/icons-material/AttachMoney';
 import SellIcon from '@mui/icons-material/Sell';
 import Transfer from '@mui/icons-material/SubdirectoryArrowRight';
-import {Divider, List, Box, Paper} from "@mui/material";
+import {Divider, List, Paper} from "@mui/material";
 import {AvatarListItem} from "../components/AvatarListItem";
-import styled from "styled-components";
 
 interface Transaction {
   type: "bought" | "sold" | "transferred";
@@ -104,7 +103,7 @@ export const Transactions = () => {
       display: "flex",
       height: "100%",
       flexDirection: "column"
-    }}>
+    }} square elevation={0}>
       <List dense sx={{
         width: "100%",
         overflowY: "auto",

@@ -1,24 +1,11 @@
 import React, {useState} from 'react';
 import {BottomNavigation, BottomNavigationAction} from '@mui/material';
 import {NavLink, useLocation} from 'react-router-dom';
-import {Theme} from '@mui/material/styles';
-import makeStyles from '@mui/styles/makeStyles';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import TimelineIcon from '@mui/icons-material/Timeline';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 
-const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    width: '100%',
-    backgroundColor: theme.palette.background.paper,
-  },
-  icon: {
-    color: theme.palette.primary.main,
-  },
-}));
-
 const NavBar: React.FC = () => {
-  const classes = useStyles();
   const {pathname} = useLocation();
   const [page, setPage] = useState(pathname);
 
@@ -27,7 +14,9 @@ const NavBar: React.FC = () => {
   };
 
   return (
-    <BottomNavigation value={page} onChange={handleChange} showLabels className={classes.root}>
+    <BottomNavigation value={page} onChange={handleChange} showLabels sx={{
+      width: '100%'
+    }}>
       <BottomNavigationAction
         label={"Portfolio"}
         value="/crypto"

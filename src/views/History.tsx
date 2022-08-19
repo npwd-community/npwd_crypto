@@ -27,7 +27,7 @@ ChartJS.register(
 const Container = styled.div`
   display: grid;
   grid-template-rows: 3fr 1fr;
-  height: 90%;
+  height: calc(100% - 3.5rem);
   place-items: center;
 `
 
