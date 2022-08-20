@@ -11,6 +11,8 @@ import SellIcon from '@mui/icons-material/Sell';
 import Transfer from '@mui/icons-material/SubdirectoryArrowRight';
 import {BalanceList} from '../components/BalanceList'
 import {BuyDialogue, SellDialogue, TradeDialogue} from "../components/Dialogue";
+import {useRecoilValue} from "recoil";
+import {state} from '../atoms/app-atoms'
 
 const Container = styled.div`
   display: grid;
@@ -21,6 +23,9 @@ const Container = styled.div`
 `
 
 export const Portfolio = () => {
+  const balance = useRecoilValue(state.balance)
+  const value = useRecoilValue(state.currentValue)
+
   const [buyOpen, setBuyOpen] = useState(false)
   const [sellOpen, setSellOpen] = useState(false)
   const [tradeOpen, setTradeOpen] = useState(false)
@@ -34,7 +39,10 @@ export const Portfolio = () => {
         justifyContent: "center",
         alignItems: "center",
       }}>
-        <BalanceList/>
+        <BalanceList
+          value={value}
+          balance={balance}
+        />
       </Paper>
       <ControlButtons
         setBuyOpen={setBuyOpen}

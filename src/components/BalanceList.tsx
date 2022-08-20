@@ -5,23 +5,28 @@ import CurrencyBitcoinIcon from "@mui/icons-material/CurrencyBitcoin";
 import React from "react";
 import {AvatarListItem} from "./AvatarListItem";
 
-export const BalanceList = () => {
+interface Balances {
+  value: number;
+  balance: number;
+}
+
+export const BalanceList: React.FC<Balances> = ({value, balance}) => {
 
   return (
     <List sx={{width: "100%"}}>
       <AvatarListItem
         heading={"Balance"}
-        text={"69"}
+        text={balance.toString()}
         icon={<Balance fontSize={"medium"} color={"primary"}/>}
       />
       <AvatarListItem
         heading={"Cash Value"}
-        text={"$1800"}
+        text={`$${(balance * value).toFixed(2)}`}
         icon={<CashValue fontSize={"medium"} color={"primary"}/>}
       />
       <AvatarListItem
         heading={"Crypto Worth"}
-        text={"$18"}
+        text={`$${value}`}
         icon={<CurrencyBitcoinIcon fontSize={"medium"} color={"primary"}/>}
       />
     </List>

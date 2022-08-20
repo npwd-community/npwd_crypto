@@ -13,6 +13,8 @@ import {Line} from 'react-chartjs-2';
 import {green, orange, red} from "@mui/material/colors";
 import styled from "styled-components";
 import {Paper, Typography, useTheme} from "@mui/material";
+import {useRecoilValue} from "recoil";
+import {state} from '../atoms/app-atoms'
 
 ChartJS.register(
   CategoryScale,
@@ -47,8 +49,9 @@ const getPercentDifference = (min: number, max: number) => {
 }
 
 export const History = () => {
-  const labels = ['', '', '', '', ''];
-  const pricehistory = [90, 42, 84, 84, 69]
+  const priceHistory = useRecoilValue(state.history)
+  const LENGTH = priceHistory.length
+  const labels = new Array<string>(LENGTH).fill("")
 
   const theme = useTheme()
   const isDarkmode = theme.palette.mode === 'dark';
@@ -57,14 +60,15 @@ export const History = () => {
     labels,
     datasets: [
       {
-        data: pricehistory,
+        data: priceHistory,
         borderColor: orange[500],
         backgroundColor: orange[700],
+        tension: 0.2
       },
     ],
   };
 
-  const [up, percent] = getPercentDifference(pricehistory[0], pricehistory[4])
+  const [up, percent] = getPercentDifference(priceHistory[0], priceHistory[LENGTH -1])
 
   return (
     <Container>

@@ -4,30 +4,9 @@ import SellIcon from '@mui/icons-material/Sell';
 import Transfer from '@mui/icons-material/SubdirectoryArrowRight';
 import {Divider, List, Paper} from "@mui/material";
 import {AvatarListItem} from "../components/AvatarListItem";
-
-interface Transaction {
-  type: "bought" | "sold" | "transferred";
-  amount: number
-  value: number
-}
-
-const mockData: Transaction[] = [
-  {
-    type: "bought",
-    amount: 69,
-    value: 1000
-  },
-  {
-    type: "sold",
-    amount: 420,
-    value: 42000
-  },
-  {
-    type: "transferred",
-    amount: 2,
-    value: 180
-  }
-]
+import {Transaction} from "../types";
+import {useRecoilValue} from "recoil";
+import {state} from '../atoms/app-atoms'
 
 function getListItem({type, amount, value}: Transaction) {
   switch (type) {
@@ -53,6 +32,8 @@ function getListItem({type, amount, value}: Transaction) {
 }
 
 export const Transactions = () => {
+  const data = useRecoilValue(state.transactions)
+
   return (
     <Paper sx={{
       display: "flex",
@@ -65,7 +46,7 @@ export const Transactions = () => {
         overflowX: "hidden"
       }}>
         {
-          mockData.map(transaction => (
+          data.map(transaction => (
             <>
               {getListItem(transaction)}
               <Divider/>
