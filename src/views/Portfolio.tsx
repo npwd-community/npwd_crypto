@@ -1,14 +1,16 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {
   Button,
   Paper,
-  styled as MuiStyled, useTheme
+  styled as MuiStyled,
+  Dialog,
 } from "@mui/material";
 import styled from "styled-components";
 import CashValue from '@mui/icons-material/AttachMoney';
 import SellIcon from '@mui/icons-material/Sell';
 import Transfer from '@mui/icons-material/SubdirectoryArrowRight';
 import {BalanceList} from '../components/BalanceList'
+import {BuyDialogue, SellDialogue, TradeDialogue} from "../components/Dialogue";
 
 const Container = styled.div`
   display: grid;
@@ -19,6 +21,10 @@ const Container = styled.div`
 `
 
 export const Portfolio = () => {
+  const [buyOpen, setBuyOpen] = useState(false)
+  const [sellOpen, setSellOpen] = useState(false)
+  const [tradeOpen, setTradeOpen] = useState(false)
+
   return (
     <Container>
       <Paper elevation={4} variant={"outlined"} sx={{
@@ -28,9 +34,38 @@ export const Portfolio = () => {
         justifyContent: "center",
         alignItems: "center",
       }}>
-        <BalanceList />
+        <BalanceList/>
       </Paper>
-      <ControlButtons />
+      <ControlButtons
+        setBuyOpen={setBuyOpen}
+        setSellOpen={setSellOpen}
+        setTradeOpen={setTradeOpen}
+      />
+      <Dialog
+        open={buyOpen}
+        onClose={() => setBuyOpen(false)}
+        hideBackdrop
+        disablePortal
+      >
+        <BuyDialogue close={() => setBuyOpen(false)} />
+      </Dialog>
+      <Dialog
+        open={sellOpen}
+        onClose={() => setSellOpen(false)}
+        hideBackdrop
+        disablePortal
+      >
+        <SellDialogue close={() => setSellOpen(false)} />
+      </Dialog>
+
+      <Dialog
+        open={tradeOpen}
+        onClose={() => setTradeOpen(false)}
+        hideBackdrop
+        disablePortal
+      >
+        <TradeDialogue close={() => setTradeOpen(false)} />
+      </Dialog>
     </Container>
   )
 }
@@ -47,16 +82,22 @@ const ButtonContainer = styled.div`
   gap: 1rem;
 `;
 
-const ControlButtons = () => {
+interface Buttons {
+  setBuyOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setSellOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setTradeOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const ControlButtons: React.FC<Buttons> = ({setBuyOpen, setSellOpen, setTradeOpen}) => {
   return (
     <ButtonContainer>
-      <ActionButton variant="contained" endIcon={<SellIcon />}>
+      <ActionButton variant="contained" endIcon={<SellIcon/>} onClick={() => setBuyOpen(true)}>
         Buy
       </ActionButton>
-      <ActionButton variant="contained" endIcon={<CashValue />}>
+      <ActionButton variant="contained" endIcon={<CashValue/>} onClick={() => setSellOpen(true)}>
         Sell
       </ActionButton>
-      <ActionButton variant="contained" endIcon={<Transfer />}>
+      <ActionButton variant="contained" endIcon={<Transfer/>} onClick={() => setTradeOpen(true)}>
         Transfer
       </ActionButton>
     </ButtonContainer>

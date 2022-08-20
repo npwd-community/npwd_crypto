@@ -35,19 +35,19 @@ function getListItem({type, amount, value}: Transaction) {
       return <AvatarListItem
         heading={"Purchase"}
         text={`Bought ${amount} for $${value}`}
-        icon={<SellIcon/>}
+        icon={<SellIcon color={"error"}/>}
       />
     case "sold":
       return <AvatarListItem
         heading={"Sold"}
         text={`Sold ${amount} for $${value}`}
-        icon={<CashValue/>}
+        icon={<CashValue color={"success"}/>}
       />
     case "transferred":
       return <AvatarListItem
         heading={"Transfer"}
         text={`Transferred ${amount} worth ${value}`}
-        icon={<Transfer/>}
+        icon={<Transfer color={"info"}/>}
       />
   }
 }

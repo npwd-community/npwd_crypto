@@ -20,11 +20,7 @@ export const lightTheme: ThemeOptions = {
       light: '#eb4242',
       dark: '#941212',
       contrastText: LIGHT_APP_TEXT_COLOR,
-    },
-    success: {
-      main: '#2196f3',
-      contrastText: LIGHT_APP_TEXT_COLOR,
-    },
+    }
   },
 };
 
@@ -42,11 +38,7 @@ export const darkTheme: ThemeOptions = {
       light: '#eb4242',
       dark: '#941212',
       contrastText: LIGHT_APP_TEXT_COLOR,
-    },
-    success: {
-      main: '#2196f3',
-      contrastText: LIGHT_APP_TEXT_COLOR,
-    },
+    }
   },
 };
 
