@@ -29,7 +29,9 @@ Config.Accounts = {
 }
 ```
 
-```json
+### Config
+
+```js
 {
   "maxHistory": 10,  // Maximum number of data points to store in history
   "framework": "esx", // Set to "esx" or "qb"
