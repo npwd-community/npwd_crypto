@@ -1,0 +1,1 @@
+export const CONFIG: Config = JSON.parse(LoadResourceFile(GetCurrentResourceName(), 'config.json'))

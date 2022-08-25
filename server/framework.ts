@@ -1,6 +1,6 @@
 import {Server as ESXServer} from 'esx.js'
 import {Server as QBServer} from 'qbcore.js'
-import {CONFIG} from "./server";
+import { CONFIG } from './config';
 
 const exp = global.exports
 

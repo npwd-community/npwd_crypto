@@ -2,9 +2,9 @@ import axios from 'axios'
 import {oxmysql} from '@overextended/oxmysql'
 import {ServerUtils} from "@project-error/pe-utils";
 import {fwWrapper, getIdentifier} from "./framework";
+import { CONFIG } from './config';
 
 const Utils = new ServerUtils()
-export const CONFIG: Config = JSON.parse(LoadResourceFile(GetCurrentResourceName(), 'config.json'))
 
 class CryptoController {
   history: number[]
@@ -203,7 +203,7 @@ Utils.onNetPromise('npwd_crypto:fetchTransactionData', async (req, res) => {
   const src = req.source
   const identifier = getIdentifier(src)
 
-  const rawData: RawTransaction[] = await oxmysql.query('SELECT * FROM npwd_crypto_transactions WHERE identifier = ? ORDER BY createdAt DESC', [identifier])
+  const rawData: RawTransaction[] = await oxmysql.query('SELECT * FROM npwd_crypto_transactions WHERE identifier = ? ORDER BY UNIX_TIMESTAMP(createdAt) DESC', [identifier])
   const transactions: DbTransaction[] = rawData?.map((data) => ({
     type: data.type,
     amount: data.amount,
@@ -223,7 +223,7 @@ setInterval(async () => {
 
 // When server starts just yeet old records to stop db being full up
 oxmysql.ready(() => {
-  oxmysql.query('DELETE * FROM npwd_crypto_transactions WHERE createdAt < NOW() - INTERVAL 60 DAY')
+  oxmysql.query('DELETE FROM npwd_crypto_transactions WHERE DATEDIFF(NOW(), createdAt) > 60')
 })
 
 RegisterCommand("manualsetcrypto", async (source: number, args: string[]) => {

@@ -11,10 +11,9 @@ import {Portfolio} from "./views/Portfolio";
 import {History} from "./views/History"
 import {Transactions} from "./views/Transactions";
 import ThemeSwitchProvider from "./ThemeSwitchProvider";
-import {useSetRecoilState} from "recoil";
+import {RecoilRoot, useSetRecoilState} from "recoil";
 import {state} from "./atoms/app-atoms";
 import fetchNui from "./utils/fetchNui";
-import {useUpdateData} from "./hooks/useUpdateData";
 
 interface AppProps {
   theme: Theme;
@@ -39,10 +38,23 @@ const Content = styled.div`
   max-height: calc(100% - 7.5rem);
 `;
 
+interface DataResponse {
+  history: number[]
+  value: number;
+  balance: number
+}
+
 const App = (props: AppProps) => {
+  const setValue = useSetRecoilState(state.currentValue)
+  const setHistory = useSetRecoilState(state.history)
+  const setBalance = useSetRecoilState(state.balance)
 
   useEffect( () => {
-    useUpdateData()
+    fetchNui<DataResponse>('npwd_crypto:fetchData').then(({history, value, balance}) => {
+      setValue(value)
+      setHistory(history)
+      setBalance(balance)
+    })
   }, [])
 
   return (
@@ -71,9 +83,11 @@ const App = (props: AppProps) => {
 };
 
 const WithProviders: React.FC<AppProps> = (props) => (
-  <NuiProvider>
-    <App {...props} />
-  </NuiProvider>
+  <RecoilRoot>
+    <NuiProvider>
+      <App {...props} />
+    </NuiProvider>
+  </RecoilRoot>
 );
 
 export default WithProviders;
