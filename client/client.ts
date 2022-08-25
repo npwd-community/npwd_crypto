@@ -1,32 +1,29 @@
-let isFocused = false;
-const exps = global.exports
+import {ClientUtils, RegisterNuiCB, ServerPromiseResp} from "@project-error/pe-utils";
+import {Transaction} from "../src/types";
+const Utils = new ClientUtils()
 
-RegisterCommand(
-  'focus',
-  () => {
-    if (isFocused) {
-      SetNuiFocus(false, false);
-      SetNuiFocusKeepInput(false);
-      isFocused = false;
-      return;
-    }
+interface FetchDataResp {
+  history: number[]
+  value: number;
+  balance: number;
+}
 
-    //SendNUIMessage({ type: 'RANDOM', payload: 'Hello from client' });
-    global.exports["npwd"].sendUIMessage('RANDOM', 'Hello from client');
+interface FetchTransactions {
+  transactions: Transaction[]
+}
 
-    SetNuiFocusKeepInput(true);
-    SetNuiFocus(true, true);
-    isFocused = true;
-  },
-  false
-);
+RegisterNuiCB('npwd_crypto:fetchData', async (data, cb) => {
+  const resp = await Utils.emitNetPromise<ServerPromiseResp<FetchDataResp>>('npwd_crypto:fetchCryptoData', {})
 
-RegisterCommand(
-  'unfocus',
-  () => {
-    SetNuiFocus(false, false);
-  },
-  false
-);
+  if(resp.status === "ok") {
+    cb({ ...resp.data })
+  }
+})
 
-RegisterKeyMapping('focus', 'Toggle Phone', 'keyboard', 'n');
+RegisterNuiCB('npwd_crypto:fetchTransaction', async (data, cb) => {
+  const resp = await Utils.emitNetPromise<ServerPromiseResp<FetchTransactions>>('npwd_crypto:fetchTransactionData', {})
+
+  if(resp.status === "ok") {
+    cb({ ...resp.data })
+  }
+})

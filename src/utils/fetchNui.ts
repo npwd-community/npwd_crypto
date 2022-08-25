@@ -20,9 +20,7 @@ async function fetchNui<T = any, D = any>(eventName: string, data?: D, mockResp?
 		return mockResp;
 	}
 	
-	const resourceName = (window as any).GetParentResourceName
-		? (window as any).GetParentResourceName()
-		: 'npwd';
+	const resourceName = 'npwd_crypto'
 	
 	const resp = await fetch(`https://${resourceName}/${eventName}`, options);
 	

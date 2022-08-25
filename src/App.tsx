@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {NuiProvider} from 'react-fivem-hooks';
 import {Route, Switch} from 'react-router-dom';
 import styled from 'styled-components';
@@ -11,6 +11,10 @@ import {Portfolio} from "./views/Portfolio";
 import {History} from "./views/History"
 import {Transactions} from "./views/Transactions";
 import ThemeSwitchProvider from "./ThemeSwitchProvider";
+import {useSetRecoilState} from "recoil";
+import {state} from "./atoms/app-atoms";
+import fetchNui from "./utils/fetchNui";
+import {useUpdateData} from "./hooks/useUpdateData";
 
 interface AppProps {
   theme: Theme;
@@ -36,6 +40,11 @@ const Content = styled.div`
 `;
 
 const App = (props: AppProps) => {
+
+  useEffect( () => {
+    useUpdateData()
+  }, [])
+
   return (
     <StyledEngineProvider injectFirst>
       <ThemeSwitchProvider mode={props.theme.palette.mode}>

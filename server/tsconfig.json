@@ -1,5 +1,21 @@
 {
   "compilerOptions": {
-    "types": ["@citizenfx/server"]
-  }
+    "paths": {
+      "*": ["./types/*"],
+      "@shared/*": ["../../shared/*"]
+    },
+    "outDir": "./",
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "target": "es2015",
+    "allowJs": false,
+    "lib": ["es2015", "DOM"],
+    "types": ["@citizenfx/server", "@types/node"],
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true
+  },
+  "include": ["./**/*", "../../shared/*"],
+  "exclude": ["**/node_modules", "**/__tests__/*"]
 }

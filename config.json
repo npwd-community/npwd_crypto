@@ -1,0 +1,16 @@
+{
+  "maxHistory": 10,
+  "framework": "esx",
+  "logging": {
+    "enabled": false,
+    "webhook": ""
+  },
+  "tick": {
+    "min": 15,
+    "max": 250,
+    "upDownRatio": 0.6,
+    "maxDeviation": 10,
+    "interval": 15,
+    "crashChance": 0.05
+  }
+}

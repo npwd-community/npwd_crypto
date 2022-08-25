@@ -1,14 +1,16 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import CashValue from '@mui/icons-material/AttachMoney';
 import SellIcon from '@mui/icons-material/Sell';
 import Transfer from '@mui/icons-material/SubdirectoryArrowRight';
 import {Divider, List, Paper} from "@mui/material";
 import {AvatarListItem} from "../components/AvatarListItem";
 import {Transaction} from "../types";
-import {useRecoilValue} from "recoil";
+import {useRecoilState, useRecoilValue} from "recoil";
 import {state} from '../atoms/app-atoms'
+import fetchNui from "../utils/fetchNui";
+import {ServerPromiseResp} from "../types/common";
 
-function getListItem({type, amount, value}: Transaction) {
+function getListItem({type, amount, value, isReceiving}: Transaction) {
   switch (type) {
     case "bought":
       return <AvatarListItem
@@ -25,14 +27,23 @@ function getListItem({type, amount, value}: Transaction) {
     case "transferred":
       return <AvatarListItem
         heading={"Transfer"}
-        text={`Transferred ${amount} worth ${value}`}
+        text={isReceiving ?
+          `Received ${amount} worth ${value}` :
+          `Transferred ${amount} worth ${value}`
+        }
         icon={<Transfer color={"info"}/>}
       />
   }
 }
 
 export const Transactions = () => {
-  const data = useRecoilValue(state.transactions)
+  const [data, setData] = useRecoilState(state.transactions)
+
+  useEffect(() => {
+    fetchNui<ServerPromiseResp<Transaction[]>>('npwd_crypto:fetchTransactions').then((resp) => {
+      setData(resp.data || [])
+    })
+  }, [])
 
   return (
     <Paper sx={{
