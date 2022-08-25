@@ -22,7 +22,6 @@ const headings = {
 }
 
 const getListItemText = (type: string, amount: number, value: number, isReceiving?: boolean) => {
-  console.log(type)
   switch (type) {
     case "bought":
       return `Bought ${amount} for $${value}`
@@ -50,8 +49,9 @@ export const Transactions = () => {
     <Paper sx={{
       display: "flex",
       height: "100%",
+      width: "100%",
       flexDirection: "column"
-    }} square elevation={0}>
+    }} variant="outlined" square>
       <List dense sx={{
         width: "100%",
         overflowY: "auto",
