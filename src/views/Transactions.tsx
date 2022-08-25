@@ -5,10 +5,9 @@ import Transfer from '@mui/icons-material/SubdirectoryArrowRight';
 import {Divider, List, Paper} from "@mui/material";
 import {AvatarListItem} from "../components/AvatarListItem";
 import {Transaction} from "../types";
-import {useRecoilState, useRecoilValue} from "recoil";
+import {useRecoilState} from "recoil";
 import {state} from '../atoms/app-atoms'
 import fetchNui from "../utils/fetchNui";
-import {ServerPromiseResp} from "../types/common";
 
 function getListItem({type, amount, value, isReceiving}: Transaction) {
   switch (type) {
@@ -40,8 +39,8 @@ export const Transactions = () => {
   const [data, setData] = useRecoilState(state.transactions)
 
   useEffect(() => {
-    fetchNui<ServerPromiseResp<Transaction[]>>('npwd_crypto:fetchTransactions').then((resp) => {
-      setData(resp.data || [])
+    fetchNui<Transaction[]>('npwd_crypto:fetchTransactions').then((resp) => {
+      setData(resp || [])
     })
   }, [])
 

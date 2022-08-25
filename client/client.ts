@@ -24,7 +24,7 @@ RegisterNuiCB('npwd_crypto:fetchTransactions', async (data, cb) => {
   const resp = await Utils.emitNetPromise<ServerPromiseResp<FetchTransactions>>('npwd_crypto:fetchTransactionData', {})
 
   if(resp.status === "ok") {
-    cb({ ...resp.data })
+    cb(resp.data)
   }
 })
 
