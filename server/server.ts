@@ -19,7 +19,7 @@ class CryptoController {
 
   async updateValue(value: number) {
     if (this.history.length === this.maxHistory)
-      this.history.splice(0)
+      this.history.splice(0, 1)
 
     this.history.push(value)
     this.currentValue = value
