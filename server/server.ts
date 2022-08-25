@@ -135,7 +135,7 @@ Utils.onNetPromise<{ amount: number }>('npwd_crypto:buyCrypto', (req, res) => {
     }
   })
 
-  new Transaction('buy', coins, getIdentifier(src)).save()
+  new Transaction('bought', coins, getIdentifier(src)).save()
 })
 
 Utils.onNetPromise<{ amount: number }>('npwd_crypto:sellCrypto', (req, res) => {
@@ -163,7 +163,7 @@ Utils.onNetPromise<{ amount: number }>('npwd_crypto:sellCrypto', (req, res) => {
     }
   })
 
-  new Transaction('sell', amount, getIdentifier(src)).save()
+  new Transaction('sold', amount, getIdentifier(src)).save()
 })
 
 Utils.onNetPromise<{ amount: number, target: number }>('npwd_crypto:tradeCrypto', (req, res) => {
@@ -199,7 +199,7 @@ Utils.onNetPromise<{ amount: number, target: number }>('npwd_crypto:tradeCrypto'
     }
   })
 
-  new Transaction('trade', amount, getIdentifier(src), getIdentifier(target)).save()
+  new Transaction('transferred', amount, getIdentifier(src), getIdentifier(target)).save()
 })
 
 Utils.onNetPromise('npwd_crypto:fetchCryptoData', (req, res) => {

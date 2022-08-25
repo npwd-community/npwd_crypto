@@ -9,29 +9,31 @@ import {useRecoilState} from "recoil";
 import {state} from '../atoms/app-atoms'
 import fetchNui from "../utils/fetchNui";
 
-function getListItem({type, amount, value, isReceiving}: Transaction) {
+const icons = {
+  bought: <SellIcon color={"error"}/>,
+  sold: <CashValue color={"success"}/>,
+  transferred: <Transfer color={"info"}/>
+}
+
+const headings = {
+  bought: "Purchase",
+  sold: "Sold",
+  transferred: "Transfer"
+}
+
+const getListItemText = (type: string, amount: number, value: number, isReceiving?: boolean) => {
+  console.log(type)
   switch (type) {
     case "bought":
-      return <AvatarListItem
-        heading={"Purchase"}
-        text={`Bought ${amount} for $${value}`}
-        icon={<SellIcon color={"error"}/>}
-      />
+      return `Bought ${amount} for $${value}`
     case "sold":
-      return <AvatarListItem
-        heading={"Sold"}
-        text={`Sold ${amount} for $${value}`}
-        icon={<CashValue color={"success"}/>}
-      />
+      return `Sold ${amount} for $${value}`
     case "transferred":
-      return <AvatarListItem
-        heading={"Transfer"}
-        text={isReceiving ?
-          `Received ${amount} worth ${value}` :
-          `Transferred ${amount} worth ${value}`
-        }
-        icon={<Transfer color={"info"}/>}
-      />
+      return isReceiving ?
+        `Received ${amount} worth ${value}` :
+        `Sent ${amount} worth ${value}`
+    default:
+      return "Something's wrong here I can feel it."
   }
 }
 
@@ -40,7 +42,7 @@ export const Transactions = () => {
 
   useEffect(() => {
     fetchNui<Transaction[]>('npwd_crypto:fetchTransactions').then((resp) => {
-      setData(resp || [])
+      setData(resp)
     })
   }, [])
 
@@ -56,9 +58,14 @@ export const Transactions = () => {
         overflowX: "hidden"
       }}>
         {
-          data.map(transaction => (
+          data.map(({type, amount, value, isReceiving}, index) => (
             <>
-              {getListItem(transaction)}
+              <AvatarListItem
+                heading={headings[type]}
+                text={getListItemText(type, amount, value, isReceiving)}
+                icon={icons[type]}
+                key={index}
+              />
               <Divider/>
             </>
           ))
