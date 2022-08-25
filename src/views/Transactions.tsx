@@ -41,7 +41,6 @@ export const Transactions = () => {
 
   useEffect(() => {
     fetchNui<ServerPromiseResp<Transaction[]>>('npwd_crypto:fetchTransactions').then((resp) => {
-      console.log(resp)
       setData(resp.data || [])
     })
   }, [])

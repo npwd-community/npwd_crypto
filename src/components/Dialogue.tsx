@@ -7,19 +7,47 @@ import {
   Input,
   InputAdornment, Typography,
 } from "@mui/material";
+import {useRecoilValue, useSetRecoilState} from "recoil";
+import {state} from '../atoms/app-atoms'
+import fetchNui from "../utils/fetchNui";
+import {ServerPromiseResp} from "../types/common";
+import {useSnackbar} from "./snackbar/useSnackbar";
 
 interface Dialogue {
   close: () => void;
 }
 
-const currentRate = 69
+interface TryBuyResp {
+  reason: string;
+  newBal: number;
+}
 
 export const BuyDialogue: React.FC<Dialogue> = ({close}) => {
   const [amount, setAmount] = useState("")
+  const [error, setError] = useState(false)
+
+  const currentRate = useRecoilValue(state.currentValue)
+  const setBalance = useSetRecoilState(state.balance)
+
+  const {addAlert} = useSnackbar()
 
   const handleBuy = () => {
     const number = parseFloat(amount)
 
+    fetchNui<ServerPromiseResp<TryBuyResp>>('npwd_crypto:tryBuyCrypto', {
+      amount: number
+    }).then((resp) => {
+      if (resp.status === "error") {
+        setError(true)
+        return addAlert({
+          message: resp.data.reason,
+          type: "error"
+        })
+      }
+
+      setError(false)
+      setBalance(resp.data.newBal)
+    })
   }
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -40,6 +68,7 @@ export const BuyDialogue: React.FC<Dialogue> = ({close}) => {
           onChange={handleChange}
           placeholder="Amount"
           type="number"
+          error={error}
           startAdornment={<InputAdornment position="start" variant="standard">$</InputAdornment>}
         />
       </DialogContent>
@@ -55,12 +84,37 @@ export const BuyDialogue: React.FC<Dialogue> = ({close}) => {
   )
 }
 
+interface TrySellResp {
+  reason: string;
+  newBal: number;
+}
+
 export const SellDialogue: React.FC<Dialogue> = ({close}) => {
   const [amount, setAmount] = useState("")
+  const [error, setError] = useState(false)
+
+  const currentRate = useRecoilValue(state.currentValue)
+  const setBalance = useSetRecoilState(state.balance)
+
+  const {addAlert} = useSnackbar()
 
   const handleSell = () => {
     const number = parseFloat(amount)
 
+    fetchNui<ServerPromiseResp<TrySellResp>>('npwd_crypto:trySellCrypto', {
+      amount: number
+    }).then((resp) => {
+      if (resp.status === "error") {
+        setError(true)
+        return addAlert({
+          message: resp.data.reason,
+          type: "error"
+        })
+      }
+
+      setError(false)
+      setBalance(resp.data.newBal)
+    })
   }
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -81,6 +135,7 @@ export const SellDialogue: React.FC<Dialogue> = ({close}) => {
           onChange={handleChange}
           placeholder="Amount"
           type="number"
+          error={error}
         />
       </DialogContent>
       <DialogActions>
@@ -95,15 +150,40 @@ export const SellDialogue: React.FC<Dialogue> = ({close}) => {
   )
 }
 
+interface TryTradeResp {
+  reason: string;
+  newBal: number;
+}
+
 export const TradeDialogue: React.FC<Dialogue> = ({close}) => {
   const [amount, setAmount] = useState("");
   const [source, setSource] = useState("");
+  const [error, setError] = useState(false)
+
+  const currentRate = useRecoilValue(state.currentValue)
+  const setBalance = useSetRecoilState(state.balance)
+
+  const {addAlert} = useSnackbar()
 
   const handleTrade = () => {
     const number = parseFloat(amount)
     const id = parseInt(source)
 
+    fetchNui<ServerPromiseResp<TryTradeResp>>('npwd_crypto:tryTradeCrypto', {
+      amount: number,
+      target: id
+    }).then((resp) => {
+      if (resp.status === "error") {
+        setError(true)
+        return addAlert({
+          message: resp.data.reason,
+          type: "error"
+        })
+      }
 
+      setError(false)
+      setBalance(resp.data.newBal)
+    })
   }
 
   const handleAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -129,12 +209,14 @@ export const TradeDialogue: React.FC<Dialogue> = ({close}) => {
             onChange={handleAmountChange}
             placeholder="Amount"
             type="number"
+            error={error}
           />
           <Input
             value={source}
             onChange={handleSourceChange}
             placeholder="Player ID"
             type="number"
+            error={error}
           />
         </FormGroup>
       </DialogContent>

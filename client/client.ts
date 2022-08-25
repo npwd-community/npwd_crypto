@@ -27,3 +27,18 @@ RegisterNuiCB('npwd_crypto:fetchTransactions', async (data, cb) => {
     cb({ ...resp.data })
   }
 })
+
+RegisterNuiCB<{amount: number}>('npwd_crypto:tryBuyCrypto', async (data, cb) => {
+  const resp = await Utils.emitNetPromise('npwd_crypto:buyCrypto', data)
+  cb(resp)
+})
+
+RegisterNuiCB<{amount: number}>('npwd_crypto:trySellCrypto', async (data, cb) => {
+  const resp = await Utils.emitNetPromise('npwd_crypto:sellCrypto', data)
+  cb(resp)
+})
+
+RegisterNuiCB<{amount: number, target: number}>('npwd_crypto:tryTradeCrypto', async (data, cb) => {
+  const resp = await Utils.emitNetPromise('npwd_crypto:tradeCrypto', data)
+  cb(resp)
+})

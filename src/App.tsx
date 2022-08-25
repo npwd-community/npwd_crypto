@@ -14,6 +14,8 @@ import ThemeSwitchProvider from "./ThemeSwitchProvider";
 import {RecoilRoot, useSetRecoilState} from "recoil";
 import {state} from "./atoms/app-atoms";
 import fetchNui from "./utils/fetchNui";
+import SnackbarProvider from "./components/snackbar/SnackbarProvider";
+import {PhoneSnackbar} from "./components/snackbar/PhoneSnackbar";
 
 interface AppProps {
   theme: Theme;
@@ -60,6 +62,7 @@ const App = (props: AppProps) => {
   return (
     <StyledEngineProvider injectFirst>
       <ThemeSwitchProvider mode={props.theme.palette.mode}>
+        <PhoneSnackbar />
         <Container>
           <Header>
             <Typography fontSize={24} fontWeight="bold">
@@ -85,7 +88,9 @@ const App = (props: AppProps) => {
 const WithProviders: React.FC<AppProps> = (props) => (
   <RecoilRoot>
     <NuiProvider>
-      <App {...props} />
+      <SnackbarProvider >
+        <App {...props} />
+      </SnackbarProvider>
     </NuiProvider>
   </RecoilRoot>
 );

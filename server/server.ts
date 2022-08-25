@@ -2,7 +2,7 @@ import axios from 'axios'
 import {oxmysql} from '@overextended/oxmysql'
 import {ServerUtils} from "@project-error/pe-utils";
 import {fwWrapper, getIdentifier} from "./framework";
-import { CONFIG } from './config';
+import {CONFIG} from './config';
 
 const Utils = new ServerUtils()
 
@@ -13,7 +13,7 @@ class CryptoController {
 
   constructor(max = 10) {
     this.history = JSON.parse(GetResourceKvpString('npwd_crypto_history')) ?? []
-    this.currentValue = GetResourceKvpInt('npwd_crypto_value') ?? CONFIG.tick.min
+    this.currentValue = GetResourceKvpFloat('npwd_crypto_value') || CONFIG.tick.min
     this.maxHistory = max
   }
 
@@ -32,6 +32,7 @@ class CryptoController {
 
   save() {
     SetResourceKvp('npwd_crypto_history', JSON.stringify(this.history))
+    SetResourceKvpFloat('npwd_crypto_value', this.currentValue)
   }
 
   async log() {
@@ -98,15 +99,15 @@ class Transaction {
   }
 
   save() {
-    oxmysql.insert("INSERT INTO npwd_crypto_transactions (identifier, type, amount, sentTo) VALUES (?, ?, ?, ?)", [
+    oxmysql.insert("INSERT INTO npwd_crypto_transactions (identifier, type, amount, worth, sentTo) VALUES (?, ?, ?, ?, ?)", [
       this.identifier,
       this.type,
       this.amount,
+      this.amount * controller.currentValue,
       this.sentTo
     ])
   }
 }
-
 
 
 Utils.onNetPromise<{ amount: number }>('npwd_crypto:buyCrypto', (req, res) => {
@@ -128,13 +129,16 @@ Utils.onNetPromise<{ amount: number }>('npwd_crypto:buyCrypto', (req, res) => {
   fwWrapper.giveCryptos(src, coins)
 
   res({
-    status: "ok"
+    status: "ok",
+    data: {
+      newBal: fwWrapper.getCryptos(src)
+    }
   })
 
   new Transaction('buy', coins, getIdentifier(src)).save()
 })
 
-Utils.onNetPromise<{ amount: number }>('npwd_crypto:buyCrypto', (req, res) => {
+Utils.onNetPromise<{ amount: number }>('npwd_crypto:sellCrypto', (req, res) => {
   const amount = req.data.amount
   const src = req.source
 
@@ -153,7 +157,10 @@ Utils.onNetPromise<{ amount: number }>('npwd_crypto:buyCrypto', (req, res) => {
   fwWrapper.giveBank(src, worth)
 
   res({
-    status: "ok"
+    status: "ok",
+    data: {
+      newBal: fwWrapper.getCryptos(src)
+    }
   })
 
   new Transaction('sell', amount, getIdentifier(src)).save()
@@ -185,6 +192,13 @@ Utils.onNetPromise<{ amount: number, target: number }>('npwd_crypto:tradeCrypto'
   fwWrapper.takeCryptos(src, amount)
   fwWrapper.giveCryptos(target, amount)
 
+  res({
+    status: "ok",
+    data: {
+      newBal: fwWrapper.getCryptos(src)
+    }
+  })
+
   new Transaction('trade', amount, getIdentifier(src), getIdentifier(target)).save()
 })
 
@@ -203,7 +217,12 @@ Utils.onNetPromise('npwd_crypto:fetchTransactionData', async (req, res) => {
   const src = req.source
   const identifier = getIdentifier(src)
 
-  const rawData: RawTransaction[] = await oxmysql.query('SELECT * FROM npwd_crypto_transactions WHERE identifier = ? ORDER BY UNIX_TIMESTAMP(createdAt) DESC', [identifier])
+  const rawData: RawTransaction[] = await oxmysql.query(
+    'SELECT * FROM npwd_crypto_transactions WHERE identifier = :identifier OR sentTo = :identifier ORDER BY UNIX_TIMESTAMP(createdAt) DESC',
+    {
+      identifier
+    }
+  )
   const transactions: DbTransaction[] = rawData?.map((data) => ({
     type: data.type,
     amount: data.amount,
@@ -238,3 +257,9 @@ RegisterCommand("manualsetcrypto", async (source: number, args: string[]) => {
 
   await controller.updateValue(value)
 }, true)
+
+on("onResourceStop", (resourceName: string) => {
+  if (resourceName === GetCurrentResourceName()) {
+    controller.save()
+  }
+})
