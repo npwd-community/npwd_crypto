@@ -31,7 +31,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies & Build
-        run: yarn --frozen-lockfile && yarn build
+        run: yarn --frozen-lockfile && yarn build && yarn build:game
 
       - name: Bundle
         run: |
