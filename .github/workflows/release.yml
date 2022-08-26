@@ -38,7 +38,7 @@ jobs:
           mkdir -p ./temp/npwd_crypto
           cp ./{LICENSE,README.md,fxmanifest.lua,config.json} ./temp/npwd_crypto
           cp -r ./dist ./temp/npwd_crypto
-          cp -r ./web/dist ./temp/npwd_crypto
+          cp -r ./web/dist ./temp/npwd_crypto/web
           cd ./temp && zip -r ../npwd_crypto_esx.zip ./npwd_crypto
           grep -rl '"framework": "esx"' ./npwd_crypto/config.json | xargs sed -i 's/"framework": "esx"/"framework": "qb"/g' 
           zip -r ../npwd_crypto_qb.zip ./npwd_crypto
