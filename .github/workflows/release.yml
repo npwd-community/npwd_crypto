@@ -36,7 +36,7 @@ jobs:
       - name: Bundle
         run: |
           mkdir -p ./temp/npwd_crypto
-          cp ./{LICENSE,README.md,fxmanifest.lua,config.json} ./temp/npwd_crypto
+          cp ./{LICENSE,README.md,fxmanifest.lua,config.json,import.sql} ./temp/npwd_crypto
           cp -r ./dist ./temp/npwd_crypto
           cp -r ./web/dist ./temp/npwd_crypto/web
           cd ./temp && zip -r ../npwd_crypto_esx.zip ./npwd_crypto
