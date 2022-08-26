@@ -13,6 +13,11 @@ External NPWD app for buying, selling and trading crypto currency.
 ![GitHub all releases](https://img.shields.io/github/downloads/npwd-community/npwd_crypto/total?style=for-the-badge)
 </div>
 
+## Screenshots
+![Portfolio Page](https://i.imgur.com/2VF9Lw7.png)
+![History Page](https://i.imgur.com/eSSIkAH.png)
+![Transaction Page](https://i.imgur.com/VjUrZbH.png)
+
 ## Setup and Configuration
 
 ### Installation
