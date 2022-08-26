@@ -40,7 +40,7 @@ jobs:
           cp -r ./dist ./temp/npwd_crypto
           cp -r ./web/dist ./temp/npwd_crypto
           cd ./temp && zip -r ../npwd_crypto_esx.zip ./npwd_crypto
-          grep -rl '"framework": "esx"' ./temp/npwd_crypto/config.json | xargs sed -i 's/"framework": "esx"/"framework": "qb"/g' 
+          grep -rl '"framework": "esx"' ./npwd_crypto/config.json | xargs sed -i 's/"framework": "esx"/"framework": "qb"/g' 
           cd ./temp && zip -r ../npwd_crypto_qb.zp ./npwd_crypto
 
       - name: Create Release
