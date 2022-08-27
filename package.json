@@ -1,6 +1,7 @@
 {
-  "name": "npwd-app",
-  "version": "0.0.0",
+  "name": "npwd_crypto",
+  "version": "1.0.4",
+  "license": "GPL-3.0",
   "private": true,
   "devDependencies": {
     "@babel/core": "7.17.5",
