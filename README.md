@@ -24,13 +24,26 @@ External NPWD app for buying, selling and trading crypto currency.
 - Download the [latest from the release](https://github.com/npwd-community/npwd_crypto/releases/latest) or build from source.
 
 **ESX ONLY**
+- Use Latest ESX legacy as of commit [c00ff2365820c6edb4146e0c357fc3ea5247b304](https://github.com/esx-framework/esx-legacy/commit/c00ff2365820c6edb4146e0c357fc3ea5247b304)
 - Add crypto as to Config.Accounts in esx_extended/config.lua:
 ```lua
 Config.Accounts = {
-	bank = _U('account_bank'),
-	black_money = _U('account_black_money'),
-	money = _U('account_money'),
-	crypto = 'Crypto Currency'
+	bank = {
+		label = _U('account_bank'),
+		round = true
+	},
+	black_money = {
+		label = _U('account_black_money'),
+		round = true
+	},
+	money = {
+		label = _U('account_money'),
+		round = true
+	},
+	crypto = {
+	    label = "Crypto Currecny",
+	    round = false
+	}
 }
 ```
 
