@@ -12,6 +12,7 @@ import {state} from '../atoms/app-atoms'
 import fetchNui from "../utils/fetchNui";
 import {ServerPromiseResp} from "../types/common";
 import {useSnackbar} from "./snackbar/useSnackbar";
+import {TextField} from 'layout/ui'
 
 interface Dialogue {
   close: () => void;
@@ -63,13 +64,15 @@ export const BuyDialogue: React.FC<Dialogue> = ({close}) => {
             You will receive {(parseFloat(amount) / currentRate).toFixed(2)} bits
           </Typography>
         }
-        <Input
+        <TextField
           value={amount}
           onChange={handleChange}
           placeholder="Amount"
           type="number"
           error={error}
-          startAdornment={<InputAdornment position="start" variant="standard">$</InputAdornment>}
+          InputProps={{
+            startAdornment: <InputAdornment position="start" variant="standard">$</InputAdornment>
+          }}
         />
       </DialogContent>
       <DialogActions>
@@ -130,7 +133,7 @@ export const SellDialogue: React.FC<Dialogue> = ({close}) => {
                 You will receive ${parseFloat(amount) * currentRate}
             </Typography>
         }
-        <Input
+        <TextField
           value={amount}
           onChange={handleChange}
           placeholder="Amount"
@@ -204,14 +207,14 @@ export const TradeDialogue: React.FC<Dialogue> = ({close}) => {
             </Typography>
         }
         <FormGroup>
-          <Input
+          <TextField
             value={amount}
             onChange={handleAmountChange}
             placeholder="Amount"
             type="number"
             error={error}
           />
-          <Input
+          <TextField
             value={source}
             onChange={handleSourceChange}
             placeholder="Player ID"
