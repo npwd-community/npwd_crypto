@@ -1,6 +1,5 @@
 interface Config {
   maxHistory: number;
-  framework: "esx" | "qb";
   logging: {
     enabled: boolean;
     webhook: string;

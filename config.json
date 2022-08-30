@@ -1,6 +1,5 @@
 {
   "maxHistory": 10,
-  "framework": "esx",
   "logging": {
     "enabled": false,
     "webhook": ""

@@ -7,13 +7,20 @@ const exp = global.exports
 export let ESX: ESXServer = null;
 export let QBCore: QBServer = null;
 
-switch (CONFIG.framework) {
-  case "esx":
-    ESX =  exp['es_extended'].getSharedObject()
-    break
-  case "qb":
-    QBCore = exp['qb-core'].GetCoreObject()
-    break
+let FRAMEWORK: 'qb' | 'esx'
+if (GetResourceState('qb-core') === 'started') FRAMEWORK = 'qb';
+if (GetResourceState('es_extended') === 'started') FRAMEWORK = 'esx';
+
+switch (FRAMEWORK) {
+  case 'esx':
+    ESX = exp['es_extended'].getSharedObject();
+    break;
+  case 'qb':
+    QBCore = exp['qb-core'].GetCoreObject();
+    break;
+  default:
+    console.log("[npwd_crypto] ERROR: No framework detected")
+    break;
 }
 
 const Round2DP = (num: number) => Math.round((num + Number.EPSILON) * 100) / 100
@@ -82,12 +89,12 @@ class FrameworkWrapper {
   }
 }
 
-export const fwWrapper = new FrameworkWrapper(CONFIG.framework)
+export const fwWrapper = new FrameworkWrapper(FRAMEWORK)
 
 export const getIdentifier = (source: number) => {
-  if (CONFIG.framework === "esx") {
+  if (FRAMEWORK === "esx") {
     return ESX.GetPlayerFromId(source).identifier
-  } else if (CONFIG.framework === "qb") {
+  } else if (FRAMEWORK === "qb") {
     return QBCore.Functions.GetPlayer(source).PlayerData.citizenid
   }
 }
