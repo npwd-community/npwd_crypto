@@ -20,6 +20,8 @@ External NPWD app for buying, selling and trading crypto currency.
 
 ## Setup and Configuration
 
+Framework is automatically detected for ESX and QBCore
+
 ### Installation
 - Download the [latest from the release](https://github.com/npwd-community/npwd_crypto/releases/latest) or build from source.
 
@@ -52,7 +54,6 @@ Config.Accounts = {
 ```js
 {
   "maxHistory": 10,  // Maximum number of data points to store in history
-  "framework": "esx", // Set to "esx" or "qb"
   "logging": {
     "enabled": false, // Enables discord webhook logging of crypto price updates
     "webhook": "" // Discord webhook link
