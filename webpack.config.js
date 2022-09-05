@@ -65,7 +65,9 @@ module.exports = {
                 './config': './npwd.config',
             },
             remotes: {
-                layout: "layout@http://localhost:3000/remoteEntry.js"
+                layout: isIngame
+                    ? 'layout@https://cfx-nui-npwd/resources/html/remoteEntry.js'
+                    : 'layout@http://localhost:3000/remoteEntry.js',
             },
             shared: {
                 ...deps,
