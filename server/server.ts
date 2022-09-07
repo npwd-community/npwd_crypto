@@ -251,7 +251,7 @@ RegisterCommand("manualsetcrypto", async (source: number, args: string[]) => {
   const [valueRaw] = args;
   const value = parseInt(valueRaw)
 
-  if (!isNaN(value)) {
+  if (isNaN(value)) {
     return console.log("[npwd_crypto]: Invalid crypto price")
   }
 
