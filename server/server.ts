@@ -3,8 +3,10 @@ import {oxmysql} from '@overextended/oxmysql'
 import {ServerUtils} from "@project-error/pe-utils";
 import {fwWrapper, getIdentifier} from "./framework";
 import {CONFIG} from './config';
+import {EventRateLimiter} from "./EventRateLimiter";
 
 const Utils = new ServerUtils()
+const RateLimiter = new EventRateLimiter(500)
 
 class CryptoController {
   history: number[]
@@ -110,12 +112,22 @@ class Transaction {
 }
 
 
+RateLimiter.registerNewEvent('npwd_crypto:buyCrypto')
 Utils.onNetPromise<{ amount: number }>('npwd_crypto:buyCrypto', (req, res) => {
   const amount = req.data.amount
   const src = req.source
+  const isLimited = RateLimiter.isPlayerRateLimited('npwd_crypto:buyCrypto', src)
+  if (isLimited) return res({
+    status: "error",
+    data: {
+      reason: "Sending requests too quickly"
+    }
+  })
+
+  RateLimiter.rateLimitPlayer('npwd_crypto:buyCrypto', src)
 
   const playerBank = fwWrapper.getBank(src)
-  if (playerBank <= amount) {
+  if (playerBank < amount) {
     return res({
       status: "error",
       data: {
@@ -138,12 +150,24 @@ Utils.onNetPromise<{ amount: number }>('npwd_crypto:buyCrypto', (req, res) => {
   new Transaction('bought', coins, getIdentifier(src)).save()
 })
 
+RateLimiter.registerNewEvent('npwd_crypto:sellCrypto')
 Utils.onNetPromise<{ amount: number }>('npwd_crypto:sellCrypto', (req, res) => {
   const amount = req.data.amount
   const src = req.source
 
+  const isLimited = RateLimiter.isPlayerRateLimited('npwd_crypto:sellCrypto', src)
+  if (isLimited) return res({
+    status: "error",
+    data: {
+      reason: "Sending requests too quickly"
+    }
+  })
+
+  RateLimiter.rateLimitPlayer('npwd_crypto:sellCrypto', src)
+
+
   const playerCryptos = fwWrapper.getCryptos(src)
-  if (playerCryptos <= amount) {
+  if (playerCryptos < amount) {
     return res({
       status: "error",
       data: {
@@ -166,9 +190,20 @@ Utils.onNetPromise<{ amount: number }>('npwd_crypto:sellCrypto', (req, res) => {
   new Transaction('sold', amount, getIdentifier(src)).save()
 })
 
+RateLimiter.registerNewEvent('npwd_crypto:tradeCrypto')
 Utils.onNetPromise<{ amount: number, target: number }>('npwd_crypto:tradeCrypto', (req, res) => {
   const {amount, target} = req.data
   const src = req.source
+
+  const isLimited = RateLimiter.isPlayerRateLimited('npwd_crypto:tradeCrypto', src)
+  if (isLimited) return res({
+    status: "error",
+    data: {
+      reason: "Sending requests too quickly"
+    }
+  })
+
+  RateLimiter.rateLimitPlayer('npwd_crypto:tradeCrypto', src)
 
   if (GetPlayerPing(target.toString()) <= 0) {
     return res({
