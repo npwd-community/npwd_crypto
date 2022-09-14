@@ -43,7 +43,7 @@ Config.Accounts = {
 		round = true
 	},
 	crypto = {
-	    label = "Crypto Currecny",
+	    label = "Crypto Currency",
 	    round = false
 	}
 }
