@@ -25,6 +25,11 @@ Framework is automatically detected for ESX and QBCore
 ### Installation
 - Download the [latest from the release](https://github.com/npwd-community/npwd_crypto/releases/latest) or build from source.
 
+* Download the npwd_crypto.zip from releases. DO NOT CHANGE THE RESOURCE NAME.
+* Unzip and add the resource to your server resources folder
+* Ensure npwd_crytpo BEFORE npwd
+* Add the app to NPWD config.json in the apps section `"apps": ["npwd_crypto"]`
+
 **ESX ONLY**
 - Use Latest ESX legacy as of commit [c00ff2365820c6edb4146e0c357fc3ea5247b304](https://github.com/esx-framework/esx-legacy/commit/c00ff2365820c6edb4146e0c357fc3ea5247b304)
 - Add crypto as to Config.Accounts in esx_extended/config.lua:
