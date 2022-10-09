@@ -1,5 +1,5 @@
 import App from './src/App';
-import { AppIcon } from './icon';
+import { AppIcon, NotificationIcon } from './icon';
 
 const defaultLanguage = 'en';
 const localizedAppName = {
@@ -17,5 +17,6 @@ export default (settings: Settings) => ({
   backgroundColor: '#ff7300',
   path: '/crypto',
   icon: AppIcon,
+  notificationIcon: NotificationIcon,
   app: App,
 });
